@@ -1,0 +1,41 @@
+{
+    "name": "@made-simple/logging",
+    "description": "A simple logging library with timestamp and chalk support",
+    "license": "MIT",
+    "version": "1.0.0",
+    "private": false,
+    "author": {
+        "name": "alexasterisk",
+        "url": "https://github.com/alexasterisk"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/npm-made-simple/logging"
+    },
+    "dependencies": {
+        "chalk": "^5.3.0"
+    },
+    "keywords": [
+        "logging",
+        "timestamp",
+        "console",
+        "chalk",
+        "simple"
+    ],
+    "scripts": {
+        "build": "tsc --build --verbose",
+        "prepublishOnly": "npm run build"
+    },
+    "type": "module",
+    "exports": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "devDependencies": {
+        "@types/node": "^20.12.12",
+        "ts-node": "^10.9.2",
+        "tslib": "^2.6.2"
+    },
+    "files": [
+        "dist/",
+        "!.tsbuildinfo"
+    ]
+}
