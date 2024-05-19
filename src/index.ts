@@ -1,4 +1,5 @@
-import chalk from "chalk";
+import _chalk from "chalk";
+export const chalk = _chalk;
 
 function timestamp() {
     return `[${chalk.gray(new Date().toLocaleTimeString())}]`;
@@ -38,5 +39,3 @@ export function trace(message?: any, ...optionalParams: any[]): void
 export function trace(...data: any[]): void {
     console.trace(timestamp(), chalk.magenta(...data));
 }
-
-export * from "chalk";

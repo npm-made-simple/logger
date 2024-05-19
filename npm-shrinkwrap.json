@@ -1,12 +1,12 @@
 {
     "name": "@made-simple/logging",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "lockfileVersion": 3,
     "requires": true,
     "packages": {
         "": {
             "name": "@made-simple/logging",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "license": "MIT",
             "dependencies": {
                 "chalk": "^5.3.0"
