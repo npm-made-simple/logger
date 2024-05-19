@@ -12,13 +12,14 @@ npm install @made-simple/logging
 
 ## Example Usage
 
-```javascript
+```typescript
 const logger = require('@made-simple/logging');
+import logger, { chalk } from '@made-simple/logging';
 
 logger.log('This is a console log with a timestamp.');
 logger.log(false, 'This is a console log without a timestamp.');
 logger.error('This is a console error with a timestamp.');
-logger.error(false, `This is a console ${logger.red('error')} without a timestamp and red text.`);
+logger.error(false, `This is a console ${chalk.red('error')} without a timestamp and red text.`);
 // etc.
 ```
 

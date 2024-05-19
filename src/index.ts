@@ -39,3 +39,14 @@ export function trace(message?: any, ...optionalParams: any[]): void
 export function trace(...data: any[]): void {
     console.trace(timestamp(), chalk.magenta(...data));
 }
+
+export default class Logger {
+    static log = log;
+    static info = info;
+    static error = error;
+    static warn = warn;
+    static success = success;
+    static debug = debug;
+    static trace = trace;
+    static chalk = chalk;
+}
