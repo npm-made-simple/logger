@@ -73,12 +73,6 @@ export function debug(...data: any[]): void {
     console.log(timestamp(), chalk.gray(...data));
 }
 
-export function trace(message?: any, ...optionalParams: any[]): void
-export function trace(...data: any[]): void {
-    write("trace", data);
-    console.trace(timestamp(), chalk.magenta(...data));
-}
-
 export default class Logger {
     static log = log;
     static info = info;
@@ -86,6 +80,5 @@ export default class Logger {
     static warn = warn;
     static success = success;
     static debug = debug;
-    static trace = trace;
     static chalk = chalk;
 }
