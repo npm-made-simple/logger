@@ -2,7 +2,7 @@
     "name": "@made-simple/logging",
     "description": "A simple logging library with timestamp and chalk support",
     "license": "MIT",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "private": false,
     "author": {
         "name": "alexasterisk",

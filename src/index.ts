@@ -37,14 +37,14 @@ function write(tag: string, type: string, data: any[]) {
         saveLog();
     }
 
-    stream.write(stripChalk(`[${type.toUpperCase()}] ${timestamp(true)} ${tag} ${data.join(" ")}\n`));
+    stream.write(stripChalk(`[${type.toUpperCase()}] ${timestamp(true)} ${tag}${data.join(" ")}\n`));
 }
 
 class Logger {
     protected tag: string = "";
 
     constructor(tag?: string, color: ChalkInstance = chalk.gray) {
-        if (tag) this.tag = `[${color(tag)}]`;
+        if (tag) this.tag = `[${color(tag)}] `;
     }
 
     /**
@@ -62,7 +62,7 @@ class Logger {
     log(message?: any, ...optionalParams: any[]): void
     log(...data: any[]): void {
         write(this.tag, "log", data);
-        console.log(timestamp(), this.tag, ...data);
+        console.log(`${timestamp()} ${this.tag}${data.join(" ")}`);
     }
 
     /**
