@@ -1,4 +1,6 @@
 import fs from "node:fs";
+
+import packages from "parsed-packages";
 import _chalk, { ChalkInstance } from "chalk";
 export const chalk = _chalk;
 
@@ -45,6 +47,36 @@ class Logger {
 
     constructor(tag?: string, color: ChalkInstance = chalk.gray) {
         if (tag) this.tag = `[${color(tag)}] `;
+    }
+
+    /**
+     * Logs all dependencies used in the project to `logger.debug()`.
+     * This is useful for debugging and ensuring that the correct versions of dependencies are being used.
+     * 
+     * ```js
+     * logger.logDependencies();
+     * // Example output:
+     * // Using chalk@5.3.0 (5.x)
+     * // Using express@4.19.2 (~4.19.0)
+     * // Using localmodule@1.0.0 ( * local * )
+     * ```
+     */
+    logDependencies(): void {
+        this.deps();
+    }
+
+    /**
+     * Alias for `logDependencies()`.
+     * 
+     * ```js
+     * logger.deps();
+     * ```
+     */
+    deps(): void {
+        const dependencies = packages.getDependencies();
+        for (const [name, dependency] of dependencies) {
+           this.debug(`Using ${chalk.whiteBright(`${name}@${dependency.version}`)} (${dependency.type ? ` * ${dependency.type} *` : dependency.range})`);
+        }
     }
 
     /**
