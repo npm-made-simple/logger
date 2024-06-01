@@ -6,6 +6,25 @@ export const chalk = _chalk;
 
 let date = new Date().toLocaleDateString().replace(/\//g, "-");
 
+const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+function archiveLastMonth() {
+    const files = fs.readdirSync("logs").filter(file => file.endsWith(".log") && file !== "latest.log");
+    if (files.length === 0) return;
+
+    const month = files[0].split("-")[1];
+    const year = files[0].split("-")[2].split(".")[0];
+    const archiveName = `${months[parseInt(month)]} ${year}`;
+
+    // couldnt find a nice and simple way to create archives without dependencies... help!
+    if (fs.existsSync(`logs/${archiveName}`)) return;
+    
+    fs.mkdirSync(`logs/${archiveName}`);
+    for (const file of files) {
+        fs.renameSync(`logs/${file}`, `logs/${archiveName}/${file}`);
+    }
+}
+
 function saveLog() {
     const data = fs.readFileSync("logs/latest.log", "utf-8");
     const fileDate = data.split("\n")[0];
@@ -14,6 +33,8 @@ function saveLog() {
         fs.writeFileSync(`logs/${fileDate}.log`, data);
         fs.writeFileSync("logs/latest.log", `${date}\n\n`);
     }
+
+    if (fileDate.split("-")[1] !== date.split("-")[1]) archiveLastMonth();
 }
 
 if (!fs.existsSync("logs")) fs.mkdirSync("logs");
