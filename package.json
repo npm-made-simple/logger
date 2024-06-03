@@ -2,7 +2,7 @@
     "name": "@made-simple/logging",
     "description": "A simple logging library with timestamp and chalk support",
     "license": "MIT",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "private": false,
     "author": {
         "name": "alexasterisk",
@@ -24,7 +24,7 @@
         "simple"
     ],
     "scripts": {
-        "build": "rm -rf dist && npm ci && tsc -b",
+        "build": "rm -rf dist && npm i && tsc -b",
         "prepublishOnly": "npm shrinkwrap && npm run build"
     },
     "type": "module",

@@ -63,7 +63,7 @@ function write(tag: string, type: string, data: any[]) {
     stream.write(stripChalk(`[${type.toUpperCase()}] ${timestamp(true)} ${tag}${data.join(" ")}\n`));
 }
 
-class Logger {
+export class LoggerBuilder {
     protected tag: string = "";
 
     constructor(tag?: string, color: ChalkInstance = chalk.gray) {
@@ -224,12 +224,14 @@ class Logger {
      * // Prints: [HH:MM:SS] [MyApp] Hello, world!
      * ```
      */
-    createTag(tag: string, color: ChalkInstance = chalk.gray): Logger {
+    createTag(tag: string, color: ChalkInstance = chalk.gray): LoggerBuilder {
         return new TaggedLogger(color(tag));
     }
 
     chalk = _chalk;
 }
 
-export default new Logger();
-export const TaggedLogger = Logger;
+export default new LoggerBuilder();
+
+// technically the same now? backwards compatibility at its finest!
+export const TaggedLogger = LoggerBuilder;
