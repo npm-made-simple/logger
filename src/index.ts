@@ -53,7 +53,8 @@ function timestamp(stripChalk = false) {
     return `[${chalk.gray(time)}]`;
 }
 
-function write(tag: string, type: string, data: any[]) {
+function write(tagColor: ChalkInstance, tagName: string, type: string, data: any[]) {
+    const tag = tagName ? `[${tagColor(tagName)}]` : "";
     const currentDate = new Date().toLocaleDateString().replace(/\//g, "-");
     if (date !== currentDate) {
         date = currentDate;
@@ -64,10 +65,12 @@ function write(tag: string, type: string, data: any[]) {
 }
 
 export class LoggerBuilder {
-    protected tag: string = "";
+    protected chalkData: ChalkInstance;
+    protected tag: string;
 
-    constructor(tag?: string, color: ChalkInstance = chalk.gray) {
-        if (tag) this.tag = `[${color(tag)}] `;
+    constructor(tag?: string, chalkData?: ChalkInstance) {
+        this.tag = tag || "";
+        this.chalkData = chalkData || chalk.gray;
     }
 
     /**
@@ -114,7 +117,7 @@ export class LoggerBuilder {
      */
     log(message?: any, ...optionalParams: any[]): void
     log(...data: any[]): void {
-        write(this.tag, "log", data);
+        write(this.chalkData, this.tag, "log", data);
         console.log(`${timestamp()} ${this.tag}${data.join(" ")}`);
     }
 
@@ -132,7 +135,7 @@ export class LoggerBuilder {
      */
     info(message?: any, ...optionalParams: any[]): void
     info(...data: any[]): void {
-        write(this.tag, "info", data);
+        write(this.chalkData, this.tag, "info", data);
         console.info(timestamp(), this.tag, chalk.blue(...data));
     }
 
@@ -150,7 +153,7 @@ export class LoggerBuilder {
      */
     error(message?: any, ...optionalParams: any[]): void
     error(...data: any[]): void {
-        write(this.tag, "error", data);
+        write(this.chalkData, this.tag, "error", data);
         console.error(timestamp(), this.tag, chalk.red(...data));
     }
 
@@ -169,7 +172,7 @@ export class LoggerBuilder {
      */
     warn(message?: any, ...optionalParams: any[]): void
     warn(...data: any[]): void {
-        write(this.tag, "warn", data);
+        write(this.chalkData, this.tag, "warn", data);
         console.warn(timestamp(), this.tag, chalk.yellow(...data));
     }
 
@@ -188,7 +191,7 @@ export class LoggerBuilder {
      */
     success(message?: any, ...optionalParams: any[]): void
     success(...data: any[]): void {
-        write(this.tag, "success", data);
+        write(this.chalkData, this.tag, "success", data);
         console.log(timestamp(), this.tag, chalk.green(...data));
     }
 
@@ -209,7 +212,7 @@ export class LoggerBuilder {
      */
     debug(message?: any, ...optionalParams: any[]): void
     debug(...data: any[]): void {
-        write(this.tag, "debug", data);
+        write(this.chalkData, this.tag, "debug", data);
         if (process.env.NODE_ENV !== "development" && process.env.SHOW_DEBUG_LOGS !== "true") return;
         console.log(timestamp(), this.tag, chalk.gray(...data));
     }
@@ -224,8 +227,53 @@ export class LoggerBuilder {
      * // Prints: [HH:MM:SS] [MyApp] Hello, world!
      * ```
      */
-    createTag(tag: string, color: ChalkInstance = chalk.gray): LoggerBuilder {
-        return new TaggedLogger(color(tag));
+    createTag(tag: string, color?: ChalkInstance): LoggerBuilder {
+        return new LoggerBuilder(tag, color);
+    }
+
+    /**
+     * Sets the tag and color of the `Logger` instance.
+     * 
+     * ```js
+     * logger.setTag("MyApp", chalk.red);
+     * logger.log("Hello, world!");
+     * // Prints: [HH:MM:SS] [MyApp] Hello, world!, in red
+     * ```
+     */
+    setTag(tag?: string, color?: ChalkInstance): void {
+        if (tag) this.tag = tag;
+        if (color) this.chalkData = color;
+    }
+
+    /**
+     * Sets the tag name of the `Logger` instance.
+     * Alias for `setTag()`.
+     * 
+     * ```js
+     * logger.setTagName("MyApp");
+     * logger.log("Hello, world!");
+     * // Prints: [HH:MM:SS] [MyApp] Hello, world!
+     * // if there was a color set prior, it will still be used
+     * ```
+     */
+    setTagName(tag: string): void {
+        this.setTag(tag);
+    }
+
+    /**
+     * Sets the tag color of the `Logger` instance.
+     * This does nothing if there is no tag set.
+     * Alias for `setTag(undefined, )`.
+     * 
+     * ```js
+     * logger.setTagColor(chalk.red);
+     * logger.log("Hello, world!");
+     * // Prints: [HH:MM:SS] [MyApp] Hello, world!, in red
+     * // assuming the tag was already set to "MyApp"
+     * ```
+     */
+    setTagColor(color: ChalkInstance): void {
+        this.setTag(undefined, color);
     }
 
     chalk = _chalk;
