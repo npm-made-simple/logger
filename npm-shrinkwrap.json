@@ -1,15 +1,15 @@
 {
     "name": "@made-simple/logging",
-    "version": "2.3.2",
+    "version": "2.3.3",
     "lockfileVersion": 3,
     "requires": true,
     "packages": {
         "": {
             "name": "@made-simple/logging",
-            "version": "2.3.2",
+            "version": "2.3.3",
             "license": "MIT",
             "dependencies": {
-                "@made-simple/util": "^1.0.0",
+                "@made-simple/util": "^1.1.0",
                 "chalk": "^5.3.0",
                 "parsed-packages": "^1.1.0"
             },
@@ -57,9 +57,9 @@
             }
         },
         "node_modules/@made-simple/util": {
-            "version": "1.0.0",
-            "resolved": "https://registry.npmjs.org/@made-simple/util/-/util-1.0.0.tgz",
-            "integrity": "sha512-gScBPKWFGShA0FjhaMH4E4B0I1YzCB+PxtEfeNRlhWwfTy+auyatKFVMsq6v0IHSGg4xDQd0RNm0OdXi/bpSjw=="
+            "version": "1.1.0",
+            "resolved": "https://registry.npmjs.org/@made-simple/util/-/util-1.1.0.tgz",
+            "integrity": "sha512-9pIfZOAOoVxNv9kjTbKxMNEiqMKKPx0OnjyBkijCU8VbyGUAjv4sypANcX0+38Q06nBxjcG8qyXdDBzSC0OOwA=="
         },
         "node_modules/@tsconfig/node10": {
             "version": "1.0.11",
