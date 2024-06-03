@@ -1,12 +1,12 @@
 import fs from "node:fs";
 
 import packages from "parsed-packages";
-import _chalk, { ChalkInstance } from "chalk";
+import _chalk, { type ChalkInstance } from "chalk";
+import { date } from "@made-simple/util";
+
 export const chalk = _chalk;
 
-let date = new Date().toLocaleDateString().replace(/\//g, "-");
-
-const months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+let currentDate = new Date().toLocaleDateString().replace(/\//g, "-");
 
 function archiveLastMonth() {
     const files = fs.readdirSync("logs").filter(file => file.endsWith(".log") && file !== "latest.log");
@@ -14,7 +14,7 @@ function archiveLastMonth() {
 
     const month = files[0].split("-")[1];
     const year = files[0].split("-")[2].split(".")[0];
-    const archiveName = `${months[parseInt(month)]} ${year}`;
+    const archiveName = `${date.getMonthName(parseInt(month))} ${year}`;
 
     // couldnt find a nice and simple way to create archives without dependencies... help!
     if (fs.existsSync(`logs/${archiveName}`)) return;
@@ -28,18 +28,18 @@ function archiveLastMonth() {
 function saveLog() {
     const data = fs.readFileSync("logs/latest.log", "utf-8");
     const fileDate = data.split("\n")[0];
-    if (fileDate === date) fs.writeFileSync("logs/latest.log", `${data}\n`);
+    if (fileDate === currentDate) fs.writeFileSync("logs/latest.log", `${data}\n`);
     else {
         fs.writeFileSync(`logs/${fileDate}.log`, data);
-        fs.writeFileSync("logs/latest.log", `${date}\n\n`);
+        fs.writeFileSync("logs/latest.log", `${currentDate}\n\n`);
     }
 
-    if (fileDate.split("-")[1] !== date.split("-")[1]) archiveLastMonth();
+    if (fileDate.split("-")[1] !== currentDate.split("-")[1]) archiveLastMonth();
 }
 
 if (!fs.existsSync("logs")) fs.mkdirSync("logs");
 if (fs.existsSync("logs/latest.log")) saveLog();
-else fs.writeFileSync("logs/latest.log", `${date}\n\n`);
+else fs.writeFileSync("logs/latest.log", `${currentDate}\n\n`);
 
 const stream = fs.createWriteStream("logs/latest.log", { flags: "a" });
 
@@ -54,9 +54,9 @@ function timestamp(stripChalk = false) {
 }
 
 function write(tag: string, type: string, data: any[]) {
-    const currentDate = new Date().toLocaleDateString().replace(/\//g, "-");
-    if (date !== currentDate) {
-        date = currentDate;
+    const newDate = new Date().toLocaleDateString().replace(/\//g, "-");
+    if (newDate !== currentDate) {
+        currentDate = newDate;
         saveLog();
     }
 
