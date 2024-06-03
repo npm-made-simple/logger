@@ -53,8 +53,7 @@ function timestamp(stripChalk = false) {
     return `[${chalk.gray(time)}]`;
 }
 
-function write(tagColor: ChalkInstance, tagName: string, type: string, data: any[]) {
-    const tag = tagName ? `[${tagColor(tagName)}]` : "";
+function write(tag: string, type: string, data: any[]) {
     const currentDate = new Date().toLocaleDateString().replace(/\//g, "-");
     if (date !== currentDate) {
         date = currentDate;
@@ -67,6 +66,10 @@ function write(tagColor: ChalkInstance, tagName: string, type: string, data: any
 export class LoggerBuilder {
     protected chalkData: ChalkInstance;
     protected tag: string;
+
+    protected get fullTag() {
+        return this.tag ? `[${this.chalkData(this.tag)}]` : "";
+    }
 
     constructor(tag?: string, chalkData?: ChalkInstance) {
         this.tag = tag || "";
@@ -117,8 +120,9 @@ export class LoggerBuilder {
      */
     log(message?: any, ...optionalParams: any[]): void
     log(...data: any[]): void {
-        write(this.chalkData, this.tag, "log", data);
-        console.log(`${timestamp()} ${this.tag}${data.join(" ")}`);
+        write(this.fullTag, "log", data);
+        if (this.tag) console.log(`${timestamp()} ${this.fullTag} ${data.join(" ")}`);
+        else console.log(`${timestamp()} ${data.join(" ")}`);
     }
 
     /**
@@ -135,8 +139,9 @@ export class LoggerBuilder {
      */
     info(message?: any, ...optionalParams: any[]): void
     info(...data: any[]): void {
-        write(this.chalkData, this.tag, "info", data);
-        console.info(timestamp(), this.tag, chalk.blue(...data));
+        write(this.fullTag, "info", data);
+        if (this.tag) console.info(`${timestamp()} ${this.fullTag} ${chalk.blue(...data)}`);
+        else console.info(`${timestamp()} ${chalk.blue(...data)}`);
     }
 
     /**
@@ -153,8 +158,9 @@ export class LoggerBuilder {
      */
     error(message?: any, ...optionalParams: any[]): void
     error(...data: any[]): void {
-        write(this.chalkData, this.tag, "error", data);
-        console.error(timestamp(), this.tag, chalk.red(...data));
+        write(this.fullTag, "error", data);
+        if (this.tag) console.error(`${timestamp()} ${this.fullTag} ${chalk.red(...data)}`);
+        else console.error(`${timestamp()} ${chalk.red(...data)}`);
     }
 
     /**
@@ -172,8 +178,9 @@ export class LoggerBuilder {
      */
     warn(message?: any, ...optionalParams: any[]): void
     warn(...data: any[]): void {
-        write(this.chalkData, this.tag, "warn", data);
-        console.warn(timestamp(), this.tag, chalk.yellow(...data));
+        write(this.fullTag, "warn", data);
+        if (this.tag) console.warn(`${timestamp()} ${this.fullTag} ${chalk.yellow(...data)}`);
+        else console.warn(`${timestamp()} ${chalk.yellow(...data)}`);
     }
 
     /**
@@ -191,8 +198,9 @@ export class LoggerBuilder {
      */
     success(message?: any, ...optionalParams: any[]): void
     success(...data: any[]): void {
-        write(this.chalkData, this.tag, "success", data);
-        console.log(timestamp(), this.tag, chalk.green(...data));
+        write(this.fullTag, "success", data);
+        if (this.tag) console.log(`${timestamp()} ${this.fullTag} ${chalk.green(...data)}`);
+        else console.log(`${timestamp()} ${chalk.green(...data)}`);
     }
 
     /**
@@ -212,9 +220,10 @@ export class LoggerBuilder {
      */
     debug(message?: any, ...optionalParams: any[]): void
     debug(...data: any[]): void {
-        write(this.chalkData, this.tag, "debug", data);
+        write(this.fullTag, "debug", data);
         if (process.env.NODE_ENV !== "development" && process.env.SHOW_DEBUG_LOGS !== "true") return;
-        console.log(timestamp(), this.tag, chalk.gray(...data));
+        if (this.tag) console.log(`${timestamp()} ${this.fullTag} ${chalk.gray(...data)}`);
+        else console.log(`${timestamp()} ${chalk.gray(...data)}`);
     }
 
     /**
