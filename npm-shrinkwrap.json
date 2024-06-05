@@ -1,12 +1,12 @@
 {
     "name": "@made-simple/logging",
-    "version": "2.3.3",
+    "version": "2.3.4",
     "lockfileVersion": 3,
     "requires": true,
     "packages": {
         "": {
             "name": "@made-simple/logging",
-            "version": "2.3.3",
+            "version": "2.3.4",
             "license": "MIT",
             "dependencies": {
                 "@made-simple/util": "^1.1.0",

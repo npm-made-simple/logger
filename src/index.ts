@@ -60,7 +60,7 @@ function write(tag: string, type: string, data: any[]) {
         saveLog();
     }
 
-    stream.write(stripChalk(`[${type.toUpperCase()}] ${timestamp(true)} ${tag}${data.join(" ")}\n`));
+    stream.write(stripChalk(`[${type.toUpperCase()}] ${timestamp(true)} ${tag ? `${tag} ` : ""}${data.join(" ")}\n`));
 }
 
 export class LoggerBuilder {
