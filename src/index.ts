@@ -1,8 +1,7 @@
 import fs from "node:fs";
 
-import packages from "parsed-packages";
 import _chalk, { type ChalkInstance } from "chalk";
-import { date } from "@made-simple/util";
+import { date, packageParser } from "@made-simple/util";
 
 export const chalk = _chalk;
 
@@ -16,10 +15,9 @@ function archiveLastMonth() {
     const year = files[0].split("-")[2].split(".")[0];
     const archiveName = `${date.getMonthName(parseInt(month))} ${year}`;
 
-    // couldnt find a nice and simple way to create archives without dependencies... help!
     if (fs.existsSync(`logs/${archiveName}`)) return;
-    
     fs.mkdirSync(`logs/${archiveName}`);
+
     for (const file of files) {
         fs.renameSync(`logs/${file}`, `logs/${archiveName}/${file}`);
     }
@@ -100,7 +98,7 @@ export class LoggerBuilder {
      * ```
      */
     deps(): void {
-        const dependencies = packages.getDependencies();
+        const dependencies = packageParser.getDependencies();
         for (const [name, dependency] of dependencies) {
            this.debug(`Using ${chalk.whiteBright(`${name}@${dependency.version}`)} (${dependency.type ? ` * ${dependency.type} *` : dependency.range})`);
         }
@@ -289,6 +287,4 @@ export class LoggerBuilder {
 }
 
 export default new LoggerBuilder();
-
-// technically the same now? backwards compatibility at its finest!
 export const TaggedLogger = LoggerBuilder;
