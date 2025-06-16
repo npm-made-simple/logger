@@ -48,7 +48,7 @@ function stripChalk(data: string) {
 function timestamp(stripChalk = false) {
     const time = new Date().toLocaleTimeString();
     if (stripChalk) return `[${time}]`;
-    return `[${chalk.gray(time)}]`;
+    return chalk.reset() + `[${chalk.gray(time)}]`;
 }
 
 function write(tag: string, type: string, data: any[]) {
@@ -156,6 +156,7 @@ export class LoggerBuilder {
      */
     error(message?: any, ...optionalParams: any[]): void
     error(...data: any[]): void {
+        data.push(new Error().stack);
         write(this.fullTag, "error", data);
         if (this.tag) console.error(`${timestamp()} ${this.fullTag} ${chalk.red(...data)}`);
         else console.error(`${timestamp()} ${chalk.red(...data)}`);
